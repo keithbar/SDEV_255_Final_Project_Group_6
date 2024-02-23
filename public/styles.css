@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #189bcc;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #189bcc;
+}
+nav ul {
+    list-style-type: none;
+    padding: 12px;
+    overflow: hidden;
+    background-color: #87ceeb;
+}
+nav li {
+    display: inline;
+    text-decoration: none;
+}
+li a {
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+li a:hover {color: #189bcc}
+.active {
+    font-weight: bold;
+}
+.profile {
+    float: right;
+}
