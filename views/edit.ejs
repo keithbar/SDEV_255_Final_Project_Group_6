@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs') %>
+
+<body>
+    <%- include('./partials/nav.ejs') %>
+
+    <h2>Editing <%= course.department %> <%= course.number %>:</h2>
+
+    <div class="create-course">
+        <form action="/courses/<%= course._id %>/update" method="POST">
+            <label for="department">Department:</label>
+            <input type="text" id="department" name="department"
+                value=<%= course.department %> required>
+            <label for="number">Course Number:</label>
+            <input type="number" id="number" name="number"
+                value=<%= course.number %> required>
+            <label for="title">Course Title:</label>
+            <input type="text" id="title" name="title"
+                value=<%= course.title %> required>
+            <label for="teacher">Course Instructor:</label>
+            <input type="text" id="teacher" name="teacher"
+                value=<%= course.teacher %> required>
+            <label for="credits">Credit Hours:</label>
+            <input type="number" id="credits" name="credits"
+                value=<%= course.credits %> required>
+            <label for="spots">Course Capacity:</label>
+            <input type="number" id="spots" name="spots"
+                value=<%= course.spots %> required>
+            <button>Submit</button>
+        </form>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+</body>
+</html>

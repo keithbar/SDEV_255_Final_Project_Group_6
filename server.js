@@ -30,9 +30,65 @@ server.use(express.static("public")); //make public folder accessible directly
 server.use(express.urlencoded({ extended: true })); //accept form data in url
 server.use(morgan("dev")); //add logging to console
 
-//send index.html as home page
+//send home page
 server.get("/", (req, res) => {
     res.render("index", { title: "Home" });
+});
+
+//new course page
+server.get("/courses/create", (req, res) => {
+    res.render("create", { title: "Add New Course" });
+});
+
+//edit course page
+server.get("/courses/:id/edit", (req, res) => {
+    const id = req.params.id;
+    Course.findById(id)
+        .then((result) => {
+            res.render("edit", { course: result, title: "Edit Course" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+//update course in db when edit is submitted
+server.post("/courses/:id/update", (req, res) => {
+    const id = req.params.id;
+    Course.findById(id)
+        .then((result) => {
+            result.department = req.body.department;
+            result.number = req.body.number;
+            result.title = req.body.title;
+            result.teacher = req.body.teacher;
+            result.credits = req.body.credits;
+            result.spots = req.body.spots;
+            result.save()
+                .then((result) => {
+                    res.redirect("/");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+//upload new course info to db, then redirect
+server.post("/courses", (req, res) => {
+    const course = new Course(req.body);
+    course.save()
+        .then((result) => {
+            //currently redirects to homepage
+            //maybe update to course list after that's made
+            //--Keith
+            res.redirect("/");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 });
 
 //send 404 error

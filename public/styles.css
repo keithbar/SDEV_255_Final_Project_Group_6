@@ -47,3 +47,19 @@ li a:hover {color: #189bcc}
 .profile {
     float: right;
 }
+
+/* For new course form --Keith */
+.create-course {
+    max-width: 400px;
+    margin: 0 auto;
+}
+.create-course input {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+}
+.create-course label {
+    display: block;
+    margin-top: 24px;
+}
