@@ -34,6 +34,10 @@ server.use(morgan("dev")); //add logging to console
 server.get("/", (req, res) => {
     res.render("index", { title: "Home" });
 });
+//send courses page --Aubrie
+server.get("/courses", (req, res) => {
+    res.render("courses", { title: "Courses" });
+});
 
 //new course page
 server.get("/courses/create", (req, res) => {
