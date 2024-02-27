@@ -35,6 +35,28 @@ server.get("/", (req, res) => {
     res.render("index", { title: "Home" });
 });
 
+//display courses --Aubrie
+server.get("/courses", (req, res) => {
+    Course.find()
+        .then((results) => {
+            res.render('courses', { title: 'Courses Catalog', courses: results });
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+});
+//displays course detail page --Aubrie
+server.get("/courses/:id/coursedetail", (req, res) => {
+    const id = req.params.id;
+    Course.findById(id)
+        .then((result) => {
+            res.render("coursedetail", { course: result, title: "Course Detail" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 //new course page
 server.get("/courses/create", (req, res) => {
     res.render("create", { title: "Add New Course" });
