@@ -62,6 +62,24 @@ server.get("/courses/create", (req, res) => {
     res.render("create", { title: "Add New Course" });
 });
 
+//delete course
+server.post("/courses/:id/delete", (req, res) => {
+    const id = req.params.id;
+    Course.findById(id)
+        .then((result) => {
+            Course.deleteOne({ _id: id })
+                .then((result) => {
+                    res.redirect("/courses");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 //edit course page
 server.get("/courses/:id/edit", (req, res) => {
     const id = req.params.id;
@@ -103,10 +121,7 @@ server.post("/courses", (req, res) => {
     const course = new Course(req.body);
     course.save()
         .then((result) => {
-            //currently redirects to homepage
-            //maybe update to course list after that's made
-            //--Keith
-            res.redirect("/");
+            res.redirect("/courses");
         })
         .catch((err) => {
             console.log(err);
