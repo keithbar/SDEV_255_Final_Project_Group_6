@@ -34,9 +34,27 @@ server.use(morgan("dev")); //add logging to console
 server.get("/", (req, res) => {
     res.render("index", { title: "Home" });
 });
-//send courses page --Aubrie
+
+//display courses --Aubrie
 server.get("/courses", (req, res) => {
-    res.render("courses", { title: "Courses" });
+    Course.find()
+        .then((results) => {
+            res.render('courses', { title: 'Courses Catalog', courses: results });
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+});
+//displays course detail page --Aubrie
+server.get("/courses/:id/coursedetail", (req, res) => {
+    const id = req.params.id;
+    Course.findById(id)
+        .then((result) => {
+            res.render("coursedetail", { course: result, title: "Course Detail" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 });
 
 //new course page
