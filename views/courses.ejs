@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./partials/head.ejs') %>
+
+<body>
+
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="courses content">
+        <h2>Courses Catalog</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Number</th>
+                    <th>Title</th>
+                    <th>Teacher</th>
+                    <th>Credits</th>
+                    <th>Spots</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+                <% if (courses.length > 0) { %>
+                    <% courses.forEach(course => { %>
+                        <tr>
+                            <td><%= course.department %></td>
+                            <td><%= course.number %></td>
+                            <td><a href="/courses/<%= course._id %>/coursedetail"><%= course.title %></a></td>
+                            <td><%= course.teacher %></td>
+                            <td><%= course.credits %></td>
+                            <td><%= course.spots %></td>
+                            <td><button>Sign Up</button></td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <p>There are no courses to display...</p>
+                <% } %>
+
+            </tbody>
+        </table>      
+    </div>
+
+    
+
+    <%- include('./partials/footer.ejs') %>
+
+</body>
+
+</html>

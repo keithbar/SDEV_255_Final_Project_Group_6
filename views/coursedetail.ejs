@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./partials/head.ejs') %>
+
+<body>
+
+    <%- include('./partials/nav.ejs') %>
+
+    <h1><%= course.title %></h1>
+    <h2><%= course.department %><%= course.number %></h2>
+    <h3>Course Professor: <%= course.teacher %></h3>
+    <p>Courses do not have descriptions yet.</p>
+    <h3>Credit Hours: <%= course.credits %></h3>
+    <a href="/courses/<%= course._id %>/edit"><button type=button>Edit Course</button></a>
+    <form action="/courses/<%= course._id %>/delete" method="post">
+        <button>Delete Course</button>
+    </form>
+    
+    <br>
+    <%- include('./partials/footer.ejs') %>
+
+</body>
+
+</html>

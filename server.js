@@ -43,9 +43,49 @@ server.get("/", (req, res) => {
     res.render("index", { title: "Home" });
 });
 
+//display courses --Aubrie
+server.get("/courses", (req, res) => {
+    Course.find()
+        .then((results) => {
+            res.render('courses', { title: 'Courses Catalog', courses: results });
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+});
+//displays course detail page --Aubrie
+server.get("/courses/:id/coursedetail", (req, res) => {
+    const id = req.params.id;
+    Course.findById(id)
+        .then((result) => {
+            res.render("coursedetail", { course: result, title: "Course Detail" });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 //new course page
 server.get("/courses/create", (req, res) => {
     res.render("create", { title: "Add New Course" });
+});
+
+//delete course
+server.post("/courses/:id/delete", (req, res) => {
+    const id = req.params.id;
+    Course.findById(id)
+        .then((result) => {
+            Course.deleteOne({ _id: id })
+                .then((result) => {
+                    res.redirect("/courses");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 });
 
 //edit course page
@@ -89,10 +129,7 @@ server.post("/courses", (req, res) => {
     const course = new Course(req.body);
     course.save()
         .then((result) => {
-            //currently redirects to homepage
-            //maybe update to course list after that's made
-            //--Keith
-            res.redirect("/");
+            res.redirect("/courses");
         })
         .catch((err) => {
             console.log(err);
