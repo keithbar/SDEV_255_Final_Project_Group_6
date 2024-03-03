@@ -12,6 +12,9 @@ const express = require("express"); //for serving webpages
 const morgan = require("morgan"); //for console logging
 const mongoose = require("mongoose"); //for database access
 const Course = require("./models/course"); //for course schema
+const authRoutes = require("./routes/authRoutes");
+const cookieParser = require("cookie-parser");
+const { requireAuth, checkUser } = require("./middleware/authMiddleware");
 
 //create new express server
 const server = express();
@@ -29,6 +32,11 @@ server.set("view engine", "ejs"); //register view engine for ejs support
 server.use(express.static("public")); //make public folder accessible directly
 server.use(express.urlencoded({ extended: true })); //accept form data in url
 server.use(morgan("dev")); //add logging to console
+server.use(express.json()); //for parsing json objects
+server.use(cookieParser()); //for parsing cookies
+
+//get info about logged in user first
+server.get("*", checkUser);
 
 //send home page
 server.get("/", (req, res) => {
@@ -90,6 +98,9 @@ server.post("/courses", (req, res) => {
             console.log(err);
         });
 });
+
+//login/signup routes
+server.use(authRoutes);
 
 //send 404 error
 server.use((req, res) => {
