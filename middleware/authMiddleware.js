@@ -2,22 +2,49 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 //require login to view page
-const requireAuth = (req, res, next) => {
+const requireAuthTeacher = (req, res, next) => {
     const token = req.cookies.jwt;
     if (token){
-        jwt.verify(token, "sdev255 secret", (err, decodedToken) => {
+        jwt.verify(token, "sdev255 secret", async (err, decodedToken) => {
             if (err) {
                 console.log(err.message);
-                res.redirect("/login");
+                res.render("401", { title: "Not Authorized" });
             }
-            else{
+            let user = await User.findById(decodedToken.id);
+            if (user.isTeacher){
                 console.log(decodedToken);
                 next();
+            }
+            else{
+                res.render("401", { title: "Not Authorized" });
             }
         });
     }
     else{
-        res.redirect("/login");
+        res.render("401", { title: "Not Authorized" });
+    }
+}
+
+const requireAuthStudent = (req, res, next) => {
+    const token = req.cookies.jwt;
+    if (token){
+        jwt.verify(token, "sdev255 secret", async (err, decodedToken) => {
+            if (err) {
+                console.log(err.message);
+                res.render("401", { title: "Not Authorized" });
+            }
+            let user = await User.findById(decodedToken.id);
+            if (user.isStudent){
+                console.log(decodedToken);
+                next();
+            }
+            else{
+                res.render("401", { title: "Not Authorized" });
+            }
+        });
+    }
+    else{
+        res.render("401", { title: "Not Authorized" });
     }
 }
 
@@ -45,4 +72,4 @@ const checkUser = (req, res, next) => {
     }
 };
 
-module.exports = { requireAuth, checkUser };
+module.exports = { requireAuthTeacher, requireAuthStudent, checkUser };

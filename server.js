@@ -1,12 +1,3 @@
-/*
-Right now the server just returns the index file as the homepage,
-and returns an error page for any other request. Adding additional
-pages later will be easy.
-Run this with node on your system and navigate to 127.0.0.1:3000
-to see it in action.
---Keith
-*/
-
 //require external modules
 const express = require("express"); //for serving webpages
 const morgan = require("morgan"); //for console logging
@@ -14,7 +5,7 @@ const mongoose = require("mongoose"); //for database access
 const Course = require("./models/course"); //for course schema
 const authRoutes = require("./routes/authRoutes");
 const cookieParser = require("cookie-parser");
-const { requireAuth, checkUser } = require("./middleware/authMiddleware");
+const { requireAuthTeacher, requireAuthStudent, checkUser } = require("./middleware/authMiddleware");
 
 //create new express server
 const server = express();
@@ -37,6 +28,7 @@ server.use(cookieParser()); //for parsing cookies
 
 //get info about logged in user first
 server.get("*", checkUser);
+server.post("*", checkUser);
 
 //send home page
 server.get("/", (req, res) => {
@@ -66,12 +58,12 @@ server.get("/courses/:id/coursedetail", (req, res) => {
 });
 
 //new course page
-server.get("/courses/create", (req, res) => {
+server.get("/courses/create", requireAuthTeacher, (req, res) => {
     res.render("create", { title: "Add New Course" });
 });
 
 //delete course
-server.post("/courses/:id/delete", (req, res) => {
+server.post("/courses/:id/delete", requireAuthTeacher, (req, res) => {
     const id = req.params.id;
     Course.findById(id)
         .then((result) => {
@@ -89,7 +81,7 @@ server.post("/courses/:id/delete", (req, res) => {
 });
 
 //edit course page
-server.get("/courses/:id/edit", (req, res) => {
+server.get("/courses/:id/edit", requireAuthTeacher, (req, res) => {
     const id = req.params.id;
     Course.findById(id)
         .then((result) => {
@@ -101,7 +93,7 @@ server.get("/courses/:id/edit", (req, res) => {
 });
 
 //update course in db when edit is submitted
-server.post("/courses/:id/update", (req, res) => {
+server.post("/courses/:id/update", requireAuthTeacher, (req, res) => {
     const id = req.params.id;
     Course.findById(id)
         .then((result) => {
@@ -125,7 +117,7 @@ server.post("/courses/:id/update", (req, res) => {
 });
 
 //upload new course info to db, then redirect
-server.post("/courses", (req, res) => {
+server.post("/courses", requireAuthTeacher, (req, res) => {
     const course = new Course(req.body);
     course.save()
         .then((result) => {
