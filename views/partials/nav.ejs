@@ -6,8 +6,18 @@
     <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/courses">Courses</a></li>
-        <li><a href="/courses/create">Create Course</a></li>
-        <li><a href="/schedule">My Schedule</a></li>
-        <li class="profile"><a href="/profile">Profile</a></li>
+
+        <% if (user){ %>
+            <% if (user.isTeacher){ %>
+                <li><a href="/courses/create">Create Course</a></li>
+            <% } else { %>
+                <li><a href="/schedule">My Schedule</a></li>
+            <% } %>
+            <li class="profile"><a href="/profile">Profile</a></li>
+            <li class="profile"><a href="/logout">Log Out</a></li>
+        <% } else { %>
+            <li class="profile"><a href="/login">Log In</a></li>
+            <li class="profile"><a href="/signup">Sign Up</a></li>
+        <% } %>
     </ul>
 </nav>

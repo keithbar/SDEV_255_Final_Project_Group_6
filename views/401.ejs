@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./partials/head.ejs') %>
+
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <h1>401 Error</h1>
+    <h2>You do not have authorization to access this page.</h2>
+
+    <% if (user){ %>
+        <h2><a href="/">Click to return to homepage</a></h2>
+    <% } else{ %>
+        <h2><a href="/">Click to log in</a></h2>
+    <% } %>
+
+    <%- include('./partials/footer.ejs') %>
+</body>
+</html>
