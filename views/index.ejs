@@ -7,34 +7,41 @@
 
     <%- include('./partials/nav.ejs') %>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Course Name</th>
-                <th>Instructor</th>
-                <th>Availability</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Placeholder Class 1</td>
-                <td>Placeholder Name 1</td>
-                <td>10 spots available</td>
-                <td><button>Sign Up</button></td>
-            </tr>
-            <tr>
-                <td>Placeholder Class 2</td>
-                <td>Placeholder Name 2</td>
-                <td>10 spots available</td>
-                <td><button>Sign Up</button></td>
-            </tr>
-            <!-- Okay, so if you need to add more
-            classes, just copy paste everything from one <tr> to the </tr>.
-            -Thomas -->
-        </tbody>
-    </table>
-
+    
+    <% if (user){ %>
+        <% if (user.isTeacher){ %> 
+            <h1><center>Welcome Back to the FSU Builder!</center></h1>
+            <h2><center><i>The FSU Builder for Teachers has you covered!</i></center></h2>
+            <h3>Prep For The Future of FSU!</h3>
+            <p>Check out and edit your courses at <a href="/courses">Courses</a> to prepare for the school year!</p>
+            <br>
+            <h3>Create New Courses!</h3>
+            <p>Submit new courses for students to join at <a href="/courses/create">Create Courses!</a></p>
+            <br>
+            <h3>We Appreciate YOU!</h3>
+            <p>Watch your emails for events held for the FSU Staff! All events are catered for any visitors with FSU employee badges!</p>
+        <% } else { %>
+            <h1><center>Welcome Back to the FSU Builder!</center></h1>
+            <h2><center><i>Prep For Your Next Semester at FSU!</i></center></h2>
+            <h3>Get Ahead For The Next Semester!</h3>
+            <p>Contact your advisor or use our <a href="/courses">Courses</a> page to schedule for your next semester at FSU!</p>
+            <br>
+            <h3>Look Forward To Your Future!</h3>
+            <p>View your current schedule at <a href="/schedule">My Schedule</a> to see what you have coming up!</p>
+            <br>
+            <h3>Get Involved With The FSU Life!</h3>
+            <p>Watch your emails for student events held on campus, clubs, and other activities that are available to you as an FSU student!</p>
+        <% } %>
+    <% } else { %>
+        <h1><center>Welcome to the FSU Builder!</center></h1>
+        <h2><center><i>You are one step closer to your future with FSU!</i></center></h2>
+        <h3>Join The FSU Family!</h3>
+        <p>
+            Take the next step towards your future by joining the FSU Family! Use the <a href="/signup">Sign Up</a> link to
+            find out what we're all about!
+        </p>
+        <p><i>If you already have an account, use the <a href="/login">Login</a> link to access your account!</i></p>
+    <% } %>
     <%- include('./partials/footer.ejs') %>
 
 </body>

@@ -44,6 +44,14 @@
         </table>      
     </div>
 
+    <% if (user){ %>
+        <% if (user.isTeacher){ %>
+            <h3><center><i>Are any of your courses missing? Contact tech support at techhelp@fsu.edu!</i></center></h3>
+        <% } else { %>
+            <h3><center><i>Is there a course missing? Contact your professors or email tech support at techhelp@fsu.edu!</i></center></h3>
+        <% } %>
+    <% } %>
+    
     
 
     <%- include('./partials/footer.ejs') %>
