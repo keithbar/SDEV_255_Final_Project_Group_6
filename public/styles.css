@@ -7,6 +7,7 @@ header {
     text-align: center;
     padding: 20px;
     background-color: #189bcc;
+    border-radius: 25px;
 }
 
 table {
@@ -29,6 +30,7 @@ nav ul {
     padding: 12px;
     overflow: hidden;
     background-color: #87ceeb;
+    border-radius: 25px;
 }
 nav li {
     display: inline;
@@ -62,4 +64,9 @@ li a :hover {color: #189bcc}
 .create-course label {
     display: block;
     margin-top: 24px;
+}
+
+footer {
+    position: fixed;
+    bottom: 1px;
 }
