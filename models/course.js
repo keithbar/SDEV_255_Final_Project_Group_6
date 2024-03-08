@@ -25,8 +25,16 @@ const courseSchema = new Schema({
         required: true
     },
     //how many students can take course
-    spots: {
+    spotsTotal: {
         type: Number,
+        required: true
+    },
+    spotsRemaining: {
+        type: Number,
+        required: true
+    },
+    description: {
+        type: String,
         required: true
     }
 }, { timestamps: true });

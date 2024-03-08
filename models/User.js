@@ -22,7 +22,8 @@ const userSchema = new mongoose.Schema({
     isTeacher: {
         type: Boolean,
         required: true
-    }
+    },
+    courses: [String]
 });
 
 //fire function before doc saved to db

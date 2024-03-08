@@ -3,6 +3,7 @@ const express = require("express"); //for serving webpages
 const morgan = require("morgan"); //for console logging
 const mongoose = require("mongoose"); //for database access
 const Course = require("./models/course"); //for course schema
+const User = require("./models/User"); //for user schema
 const authRoutes = require("./routes/authRoutes");
 const cookieParser = require("cookie-parser");
 const { requireAuthTeacher, requireAuthStudent, checkUser } = require("./middleware/authMiddleware");
@@ -63,8 +64,16 @@ server.get("/courses/create", requireAuthTeacher, (req, res) => {
 });
 
 //delete course
-server.post("/courses/:id/delete", requireAuthTeacher, (req, res) => {
+server.post("/courses/:id/delete", requireAuthTeacher, async (req, res) => {
     const id = req.params.id;
+
+    const students = await User.find({ courses: id });
+    for(student of students){
+        const index = student.courses.indexOf(id);
+        student.courses.splice(index, 1);
+        await student.save();
+    }
+
     Course.findById(id)
         .then((result) => {
             Course.deleteOne({ _id: id })
@@ -119,9 +128,70 @@ server.post("/courses/:id/update", requireAuthTeacher, (req, res) => {
 //upload new course info to db, then redirect
 server.post("/courses", requireAuthTeacher, (req, res) => {
     const course = new Course(req.body);
+    course.spotsRemaining = course.spotsTotal;
     course.save()
         .then((result) => {
             res.redirect("/courses");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+//register for class
+server.get("/register/:id", requireAuthStudent, async (req, res) => {
+    const course_id = req.params.id;
+    const course = await Course.findById(course_id);
+    const user = res.locals.user;
+    
+    course.spotsRemaining--;
+    user.courses.push(course_id);
+
+    course.save()
+        .then((result) => {
+            user.save()
+                .then((result) => {
+                    res.redirect("/schedule");
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+//get schedule
+server.get("/schedule", requireAuthStudent, async (req, res) => {
+    const user = res.locals.user;
+    let courses = [];
+    for(course_id of user.courses){
+        const course = await Course.findById(course_id);
+        courses.push(course);
+    }
+    res.render("schedule", { title: "Your Schedule", courses });
+});
+
+//drop class
+server.get("/drop/:id", requireAuthStudent, async (req, res) => {
+    const id = req.params.id;
+    const user = res.locals.user;
+    const course = await Course.findById(id);
+    const index = user.courses.indexOf(id);
+
+    user.courses.splice(index, 1); //remove course from array
+    course.spotsRemaining++;
+
+    course.save()
+        .then((result) => {
+            user.save()
+                .then((result) => {
+                    res.redirect("/schedule");
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         })
         .catch((err) => {
             console.log(err);
