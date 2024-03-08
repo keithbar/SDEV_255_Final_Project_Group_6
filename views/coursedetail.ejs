@@ -10,7 +10,7 @@
     <h1><%= course.title %></h1>
     <h2><%= course.department %><%= course.number %></h2>
     <h3>Course Professor: <%= course.teacher %></h3>
-    <p>Courses do not have descriptions yet.</p>
+    <p><%= course.description %></p>
     <h3>Credit Hours: <%= course.credits %></h3>
 
     <% if (user && user.isTeacher){ %>
@@ -18,8 +18,17 @@
         <form action="/courses/<%= course._id %>/delete" method="post">
             <button>Delete Course</button>
         </form>
+    <% } else if (user && user.isStudent){ %>
+        <% if (user.courses.includes(course._id)){ %>
+            <form action="/drop/<%= course._id %>">
+                <input type="submit" value="Drop Class">
+            </form>
+        <% } else if (course.spotsRemaining > 0){ %>
+            <form action="/register/<%= course._id %>">
+                <input type="submit" value="Sign Up">
+            </form>
+        <% } %>
     <% } %>
-    
     <br>
     <%- include('./partials/footer.ejs') %>
 

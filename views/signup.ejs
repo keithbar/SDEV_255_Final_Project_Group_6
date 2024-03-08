@@ -56,11 +56,12 @@
             isStudent = false;
             isTeacher = true;
         }
+        const courses = [];
 
         try{
             const res = await fetch("/signup", {
                 method: "POST",
-                body: JSON.stringify({ email, password, isStudent, isTeacher }),
+                body: JSON.stringify({ email, password, isStudent, isTeacher, courses }),
                 headers: { "Content-Type": "application/json" }
             });
             const data = await res.json();

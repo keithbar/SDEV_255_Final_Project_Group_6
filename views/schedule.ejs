@@ -8,7 +8,8 @@
     <%- include('./partials/nav.ejs') %>
 
     <div class="courses content">
-        <h2>Courses Catalog</h2>
+        <h2>Your Schedule</h2>
+
         <% if (courses.length > 0) { %>
             <table>
                 <thead>
@@ -18,7 +19,6 @@
                         <th>Title</th>
                         <th>Teacher</th>
                         <th>Credits</th>
-                        <th>Spots Remaining</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -30,31 +30,17 @@
                             <td><a href="/courses/<%= course._id %>/coursedetail"><%= course.title %></a></td>
                             <td><%= course.teacher %></td>
                             <td><%= course.credits %></td>
-                            <td><%= course.spotsRemaining %></td>
-                            <td>
-                                <% if (user.isStudent && !user.courses.includes(course._id) && course.spotsRemaining > 0){ %>
-                                    <form action="/register/<%= course._id %>">
-                                        <input type="submit" value="Sign Up">
-                                    </form>
-                                <% } %>
-                            </td>
+                            <td><form action="/drop/<%= course._id %>">
+                                <input type="submit" value="Drop Class">
+                            </form></td>
                         </tr>
                     <% }) %>
                 </tbody>
-            </table>
+            </table> 
         <% } else { %>
             <p>There are no courses to display...</p>
-        <% } %>  
-    </div>
-
-
-    <% if (user){ %>
-        <% if (user.isTeacher){ %>
-            <h3><center><i>Are any of your courses missing? Contact tech support at techhelp@fsu.edu!</i></center></h3>
-        <% } else { %>
-            <h3><center><i>Is there a course missing? Contact your professors or email tech support at techhelp@fsu.edu!</i></center></h3>
         <% } %>
-    <% } %>
+    </div>
 
     <%- include('./partials/footer.ejs') %>
 
